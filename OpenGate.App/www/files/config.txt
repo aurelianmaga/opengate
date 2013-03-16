@@ -1,0 +1,1 @@
+﻿﻿u=startflorin;p=openGate;s=http://192.168.230.241:8125;n=Florin Cumpanasu
