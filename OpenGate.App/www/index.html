@@ -27,20 +27,95 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <title>Open Gate</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-        <link rel="stylesheet" href="my.css" />
-        <script src="http://code.jquery.com/jquery-1.7.2.min.js">
-        </script>
+        <script src="js/index.js"></script>
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js">
         </script>
+    </head>
 		<script>
-		function OpenGate()
+	// Perform Ajax Request
+	function ajax(qwery, div)
+	{
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
 		{
-			var credentials=new Array("u"=>"florincu@fortech.ro", "p"=>"OpenGate");
-			post_to_url("http://192.168.230.241:8125/openGate", credentials);
+			//if (xmlhttp.readyState==4 && xmlhttp.status==200 )
+			{
+				{
+					document.getElementById(div).innerHTML  = "Status: " + xmlhttp.status + "<br/>" + xmlhttp.responseText;
+				}
+			}
+		}
+		xmlhttp.open("POST", qwery ,true);
+		xmlhttp.send();
+	}
+
+	// Perform Direct Request
+	function post_to_url(path, params, method) {
+    method = method || "POST"; // Set method to post by default, if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    var addField = function( key, value ){
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", value );
+
+        form.appendChild(hiddenField);
+    }; 
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            if( params[key] instanceof Array ){
+                for(var i = 0; i < params[key].length; i++){
+                    addField( key, params[key][i] )
+                }
+            }
+            else{
+                addField( key, params[key] ); 
+            }
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+	}
+
+		function OpenGate(option)
+		{
+			switch(option)
+			{
+				case "1":
+					var credentials = new Array();
+					credentials['u'] = 'florincu@fortech.ro';
+					credentials['p'] = 'OpenGate';
+					//ajax("http://192.168.230.241:8125/?u=florin&p=opengate", "applicationStatus");
+					$.ajax({
+					  url: "http://192.168.230.241:8125/?u=florin&p=opengate",
+					  context: document.body
+					}).done(function() {
+					  	document.getElementById("applicationStatus").innerHTML  = "Status: " + "call ok" + "<br/>" ;
+					}).fail(function() {
+					  	document.getElementById("applicationStatus").innerHTML  = "Status: " + "call error" + "<br/>" ;
+					});
+				break;
+			}
 		}
 		</script>
-    </head>
 	    <body>
+
         <!-- Home -->
 		<div class="app">
         <div data-role="page" id="page1">
@@ -66,17 +141,17 @@
                     </select>
                 </div>
 				<div id="deviceready" class="blink">
-                <p class="event listening">Lorem ipsum messageum</p>
-				        <p class="event received">
+                <p id='applicationStatus' class="event listening">Connecting to Device</p>
+				<p class="event received">
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <label for="toggleswitch2">
                         </label>
-                        <select name="toggleswitch2" id="toggleswitch2" data-theme="" data-role="slider">
-                            <option value="off">
+                        <select onchange="OpenGate(this.value)" name="toggleswitch2" id="toggleswitch2" data-theme="" data-role="slider">
+                            <option value="0">
                                 Off
                             </option>
-                            <option value="on">
+                            <option value="1">
                                 On
                             </option>
                         </select>
