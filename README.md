@@ -1,4 +1,0 @@
-opengate
-========
-
-opengate app
