@@ -91,6 +91,11 @@
                     if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
                     
                     document.getElementById("lastAccessed").innerHTML = today
+
+                    var numberOfTimesOpened = localStore.getItem("n");
+                    if(numberOfTimesOpened == undefined) numberOfTimesOpened = 0;
+
+                    localstore.setItem("");
                 };
 
                 // onError Callback receives a PositionError object
@@ -132,10 +137,56 @@
                         </option>
                     </select>
                 </div>
-                <div id="deviceready" class="blink">
+
+<!-- BEGIN REGION OF CONFIGURATION -->
+
+<script>
+ function ToggleFormVisibility()
+ {
+  if($("#configArea").is(':visible'))
+  {
+   $("#configArea").css('display', 'none');
+   $('#configArea').attr('value', 'Save Changes');
+   
+   s=$('#server').val();
+   n=$('#uname').val();
+   u=$('#username').val();
+   p=$('#password').val();
+   $("#commandButtonHolder").css("display","block");
+  }
+  else
+  {
+   $("#configArea").css('display', 'block');
+   $('#configArea').attr('value', 'Configure Form');
+   
+   $('#server').val(s);
+   $('#uname').val(n);
+   $('#username').val(u);
+   $('#password').val(p);
+   $("#commandButtonHolder").css("display","none");
+  }
+ }
+</script>
+
+<input type='button' id='configTrigger' onclick='ToggleFormVisibility()' value='Configure Application'>
+<div id='configArea' method='post' style='display: none'>
+ <form action='#'>
+  <label for='server'>Server: </label>
+  <input type='text' id='server' name='server'/>
+  <label for='server'>Name: </label>
+  <input type='text' id='uname' name='uname'/>
+  <label for='server'>username: </label>
+  <input type='text' id='username' name='username'/>
+  <label for='server'>password: </label>
+  <input type='password' id='password' name='password'/>
+ </form>
+</div>
+<!-- END REGION OF CONFIGURATION -->
+
+                <div id="deviceready"  class="blink">
                 <p id='applicationStatus' class="event listening">Connecting to Device</p>
                 <p class="event received">
-                <div data-role="fieldcontain">
+                <div id="commandButtonHolder" data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <label for="toggleswitch2">
                         </label>
