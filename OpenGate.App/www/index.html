@@ -39,27 +39,12 @@ under the License.
 <p class="event listening">Connecting to Device</p>
 <p class="event received">Device is Ready</p>
 </div> -->
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <label for="selectmenu1">
-                    </label>
-                    <select name="">
-                        <option value="about">
-                            About OpenGate
-                        </option>
-                        <option value="config">
-                            Configure OpenGate
-                        </option>
-                        <option value="log">
-                            Read Log File
-                        </option>
-                    </select>
-                </div>
 
 <!-- BEGIN REGION OF CONFIGURATION -->
 
-                <input type='button' id='configTrigger' onclick='ToggleFormVisibility()' value='Configure Application'>
+                
                 <div id='configArea' method='post' style='display: none'>
+                 
                  <form action='#'>
                   <label for='server'>Server: </label>
                   <input type='text' id='server' name='server'/>
@@ -70,30 +55,51 @@ under the License.
                   <label for='server'>password: </label>
                   <input type='password' id='password' name='password'/>
                  </form>
+                 <input type='button' id='saveTrigger' onclick='ToggleFormVisibility()' value='Save'>
                 </div>
 <!-- END REGION OF CONFIGURATION -->
 
-                <div id="deviceready" class="blink">
-                <p id='applicationStatus' class="event listening">Connecting to Device</p>
-                <p class="event received">
-                <div id="commandButtonHolder" data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="toggleswitch2">
-                        </label>
-                        <input type="button" value="Send" onclick="OpenGate()" >
-                        </input>
-                        <!-- <select onchange="OpenGate()" name="toggleswitch2" id="toggleswitch2" data-theme="" data-role="slider">
-<option value="0">
-Off
-</option>
-<option value="1">
-On
-</option>
-</select> -->
-                    </fieldset>
+                
+                <div id='aboutArea' style='display: none'>
+                 <dl>
+                  <dt>
+                   Application name:
+                  </dt>
+                  <dd>
+                   Open Gate
+                  </dd>   
+                  <dt>
+                   Created by:
+                  </dt>
+                  <dd>
+                   Some programmers
+                  </dd>   
+                  <dt>
+                   Event:
+                  </dt>
+                  <dd>
+                   Hackathon FORTECH mar-2013
+                  </dd>   <dt>
+                   Created at:
+                  </dt>
+                  <dd>
+                   17 March 2013
+                  </dd> 
+                 </dl>
                 </div>
-                </p>
-                </div>
+
+                <div id="mainContent">
+                 <div id="commandButtonHolder" data-role="fieldcontain">
+                    <input type="button" data-role="button" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b" value="Send" onclick="OpenGate()" >
+                    </input>
+                  </div>
+                  <input type='button' id='aboutTrigger' onclick='TogglePresentationVisibility()' value='About'>
+                  <input type='button' id='configTrigger' onclick='ToggleFormVisibility()' value='Configure Application'>
+                  <div id="deviceready">
+                    <p id='applicationStatus' class="event listening">Connecting to Device</p>
+                    <p class="event received"></p>
+                  </div>
+              </div>
             </div>
             <div data-theme="a" data-role="footer">
                 <h3>
@@ -155,6 +161,18 @@ On
                 return "";
             }            
 
+           function TogglePresentationVisibility()
+           {
+            if($("#aboutArea").is(':visible'))
+            {
+              $("#aboutArea").css('display', 'none');
+            }
+            else
+            {
+               $("#aboutArea").css('display', 'block');
+            }
+           }
+
             function ToggleFormVisibility()
              {
               if($("#configArea").is(':visible'))
@@ -174,7 +192,7 @@ On
                }catch(err){
                 alert(err.message);
                }
-               $("#deviceready").css("display","block");
+               $("#mainContent").css("display","block");
 
                //alert("savedValued:" + getProperty("s")+getProperty("u")+getProperty("p"));
               }
@@ -188,7 +206,7 @@ On
                $('#uname').val(getProperty("n"));
                $('#username').val(getProperty("u"));
                $('#password').val(getProperty("p"));
-               $("#deviceready").css("display","none");
+               $("#mainContent").css("display","none");
               }
              }
         </script>
