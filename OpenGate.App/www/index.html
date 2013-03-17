@@ -107,25 +107,20 @@ On
 
         <script>
             function OpenGate()
-            {
-                if(localStorage.openCount){
-                    localStorage.openCount = Number(localStorage.openCount)+1;
-                }else{
-                    localStorage.openCount = 1;
-                }
-                document.getElementById("lastAccessed").innerHTML=" " + localStorage.openCount + " time(s).";
-                  
+            {  
                 // onSuccess Callback
                 //   This method accepts a `Position` object, which contains
                 //   the current GPS coordinates
                 //
+                alert("tst");
+                try{
+                alert(getProperty("s")+"/?u="+getProperty("u")+"&p="+getProperty("p"));
+                }catch(err){alert("error getting property:"+err.message);}
+                alert("ts2t");
                 var onSuccess = function(position) {
-                    var credentials = new Array();
-                    credentials['u'] = '';
-                    credentials['p'] = '';
-                    //ajax("http://192.168.230.241:8125/?u=florin&p=opengate", "applicationStatus");
+                    alert(getProperty("s")+"/?u="+getProperty("u")+"&p="+getProperty("p"));
                     $.ajax({
-                      url: "http://192.168.230.254:8125/?u=<USER>&p=<PASSWORD>&lat="+position.coords.latitude+"&lng="+position.coords.longitude,
+                      url: getProperty("s")+"/?u="+getProperty("u")+"&p="+getProperty("p")+"&lat="+position.coords.latitude+"&lng="+position.coords.longitude,
                       context: document.body
                     }).done(function() {
                         document.getElementById("applicationStatus").innerHTML  = "Status: " + "call ok" + "<br/>" ;
@@ -154,28 +149,38 @@ On
                 navigator.geolocation.getCurrentPosition(onSuccess, onError);
             }
 
+            function saveProperty(propertyName,value){
+                localStorage[propertyName] = value;
+            }
+            function getProperty(propertyName){
+                if(localStorage[propertyName]) return localStorage[propertyName];
+                return "";
+            }            
+
             function ToggleFormVisibility()
              {
               if($("#configArea").is(':visible'))
               {
+                //saving
                $("#configArea").css('display', 'none');
                $('#configArea').attr('value', 'Save Changes');
                
-               s=$('#server').val();
-               n=$('#uname').val();
-               u=$('#username').val();
-               p=$('#password').val();
+               setProperty("s",$('#server').val());
+               setProperty("n",$('#uname').val());
+               setProperty("u",$('#username').val());
+               setProperty("p",$('#password').val());
                $("#deviceready").css("display","block");
               }
               else
               {
+                //loading
                $("#configArea").css('display', 'block');
                $('#configArea').attr('value', 'Configure Form');
                
-               $('#server').val(s);
-               $('#uname').val(n);
-               $('#username').val(u);
-               $('#password').val(p);
+               $('#server').val(getProperty("s"));
+               $('#uname').val(getProperty("n"));
+               $('#username').val(getProperty("u"));
+               $('#password').val(getProperty("p"));
                $("#deviceready").css("display","none");
               }
              }
