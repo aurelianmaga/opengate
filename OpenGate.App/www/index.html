@@ -81,6 +81,16 @@
                     }).fail(function() {
                         document.getElementById("applicationStatus").innerHTML  = "Status: " + "call error" + "<br/>" ;
                     });
+
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1; //January is 0!
+
+                    var yyyy = today.getFullYear();
+                    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
+                    
+                    document.getElementById("lastAccessed").innerHTML = today
                 };
 
                 // onError Callback receives a PositionError object
@@ -101,12 +111,11 @@
       
     <body onload="ReadFile('config')">
         <div>
-cd          <h1>Open Gate</h1>
+           <h1>Open Gate</h1>
             <!-- <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div> -->
-
             <div data-role="content">
                 <div data-role="fieldcontain">
                     <label for="selectmenu1">
@@ -145,9 +154,9 @@ cd          <h1>Open Gate</h1>
                 </p>
                 </div>
             </div>
-            <div data-theme="a" data-role="footer" data-position="fixed">
+            <div data-theme="a" data-role="footer">
                 <h3>
-                    Last Accessed: 10-mar-2012
+                Last Accessed: <span id="lastAccessed">10-mar-2012</span>
                 </h3>
             </div>
         
